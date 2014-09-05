@@ -1,48 +1,8 @@
+
+from six import string_types
 import socket
-import time
 import struct
-import re
-import sys
 
-
-#########################
-## UDP Reciever
-def process_data(in_message):
-    print("st:", repr(in_message))
-    if not isinstance(in_message, str):
-        message = in_message.decode("iso-8859-1")
-    else:
-        message = in_message
-    stuff = re.search(r"(\w+):(\w+):([\w\W]*)", message)
-    if stuff is None:
-        raise IOError
-    name = stuff.group(1)
-    dtype = stuff.group(2)
-    data = in_message[len(name) + len(dtype) + 2:]
-    data = struct.unpack(dtype, data)
-    return name, data
-
-class UDP_receiver(object):
-    def __init__(self, ip, port):
-        try:
-            self.socket.close()
-        except AttributeError:
-            pass
-        self._ip, self._port = ip, port
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.socket.bind((ip, port))
-
-    def init(self, *args):
-        self.__init__(*args)
-
-    def receive_data(self, size=255):
-        message, addr = self.socket.recvfrom(size)
-        print('got', repr(message))
-        return process_data(message)
-
-#########################
-## UDP Sender
-#
 UDP_DATA_FORMAT = "{name}:{format}:"
 ALL_POS = [255, 65535, 4294967295]
 STD_POS = [127, 32767, 2147483647]
@@ -87,6 +47,7 @@ def find_dtype(tup, dtype):
 
     return str(len(tup)) + DTYPES[(dmin, dmax)]
 
+import sys
 def convert_data(name, iterable, dtype):
     data = tuple(iterable)
     dtype = find_dtype(data, dtype)
@@ -96,7 +57,7 @@ def convert_data(name, iterable, dtype):
         header = header.encode()
     return header + packed_data
 
-class UDP_sender(object):
+class UDP(object):
     def __init__(self, ip, port):
         self._ip = ip
         self._port = port
@@ -108,20 +69,12 @@ class UDP_sender(object):
         print(repr(message))
         return self.socket.sendall(message)
 
-def main_receiver():
-    UDP_IP = "0.0.0.0"
-    UDP_PORT = 5099
-    udp = UDP_receiver(UDP_IP, UDP_PORT)
-    print("Server started")
-    while True:
-        print(udp.receive_data(1024))
-        time.sleep(0.001)
 
-def main_sender():
+def main():
     import time
     IP = "192.168.100.111"
     PORT = 5099
-    udp = UDP_sender(IP, PORT)
+    udp = UDP(IP, PORT)
     n = 0
 
     while(True):
@@ -132,4 +85,4 @@ def main_sender():
             n = 0
 
 if __name__ == "__main__":
-    main_receiver()
+    main()

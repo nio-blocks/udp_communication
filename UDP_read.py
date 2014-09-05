@@ -43,7 +43,7 @@ class GenUDPHandler(BaseRequestHandler):
         return process_data(packet)
 
 @Discoverable(DiscoverableType.block)
-class OptoReader(Collector, Block):
+class GeneralUDP(Collector, Block):
     """ A Block for reading from a "general" UDP object (data in format `name:type:data`
     - type is according to python struct guidelines """
 

@@ -16,7 +16,6 @@ from .mixins.collector.collector import Collector
 from UDP_general import process_data
 
 class ThreadedUDPServer(ThreadingMixIn, UDPServer):
-
     def __init__(self, server_address, handler_class, notifier):
         super().__init__(server_address, handler_class)
         self.notifier = notifier
@@ -28,7 +27,6 @@ class GenUDPHandler(BaseRequestHandler):
     there is no connection the client address must be given explicitly
     when sending data back via sendto().
     """
-
     def handle(self):
         #data = self.request[0].strip()
         data = self.request[0]

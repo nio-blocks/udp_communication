@@ -2,15 +2,21 @@ import socket
 import time
 import struct
 import re
+import sys
 
 
-def process_data(message):
-    stuff = re.match(r"(\w+):(\w+):([\w\W]*)", message)
+def process_data(in_message):
+    print("st:", repr(in_message))
+    if not isinstance(in_message, str):
+        message = in_message.decode("iso-8859-1")
+    else:
+        message = in_message
+    stuff = re.search(r"(\w+):(\w+):([\w\W]*)", message)
     if stuff is None:
         raise IOError
     name = stuff.group(1)
     dtype = stuff.group(2)
-    data = stuff.group(3)
+    data = in_message[len(name) + len(dtype) + 2:]
     data = struct.unpack(dtype, data)
     return name, data
 
@@ -29,6 +35,7 @@ class UDP_receiver(object):
 
     def receive_data(self, size=255):
         message, addr = self.socket.recvfrom(size)
+        print('got', repr(message))
         return process_data(message)
 
 def main():

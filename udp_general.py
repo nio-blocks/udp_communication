@@ -4,7 +4,6 @@ import struct
 import re
 import sys
 
-
 #########################
 ## UDP Reciever
 def process_data(in_message):
@@ -20,7 +19,7 @@ def process_data(in_message):
     dtype = stuff.group(2)
     data = in_message[len(name) + len(dtype) + 2:]
     data = struct.unpack(dtype, data)
-    return name, data
+    return {name: data}
 
 class UDP_receiver(object):
     def __init__(self, ip, port):

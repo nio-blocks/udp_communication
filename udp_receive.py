@@ -34,15 +34,16 @@ class GenUDPHandler(BaseRequestHandler):
 
         pack = self._parse_packet(data)
         if pack:
-            self.server.notifier(*pack)
+            self.server.notifier(pack)
 
     def _parse_packet(self, packet):
         return process_data(packet)
 
 @Discoverable(DiscoverableType.block)
-class GeneralUDP(Collector, Block):
+class UDPReceive(Collector, Block):
     """ A Block for reading from a "general" UDP object (data in format `name:type:data`
-    - type is according to python struct guidelines """
+    - type is according to python struct guidelines
+    - FUTURE:name can have commas. i.e. name,subname will be a dictionary of dict[name][subname]"""
 
     host = StringProperty(title="Listener Host", default="127.0.0.1")
     port = IntProperty(title="Listener Port", default=5008)
@@ -75,7 +76,5 @@ class GeneralUDP(Collector, Block):
             self._server.shutdown()
         super().stop()
 
-    def _handle_input(self, name, data):
-        sig_out = {name: data}
-        self.notify_signals([Signal(sig_out)])
-        self.notify_signals([Signal(sig_out)])
+    def _handle_input(self, signal):
+        self.notify_signals([Signal(signal)])

@@ -12,8 +12,7 @@ from nio.metadata.properties.holder import PropertyHolder
 from nio.modules.threading import spawn
 from .mixins.collector.collector import Collector
 
-
-from UDP_general import process_data
+from udp_general import process_data
 
 class ThreadedUDPServer(ThreadingMixIn, UDPServer):
     def __init__(self, server_address, handler_class, notifier):

@@ -1,16 +1,16 @@
 import binascii
 from enum import Enum
 from socketserver import ThreadingMixIn, UDPServer, BaseRequestHandler
-from nio.common.block.base import Block
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.common.signal.base import Signal
-from nio.metadata.properties.int import IntProperty
-from nio.metadata.properties.string import StringProperty
-from nio.metadata.properties.select import SelectProperty
-from nio.metadata.properties.list import ListProperty
-from nio.metadata.properties.holder import PropertyHolder
-from nio.modules.threading import spawn
-from .mixins.collector.collector import Collector
+from nio.block.base import Block
+from nio.util.discovery import discoverable
+from nio.signal.base import Signal
+from nio.properties.int import IntProperty
+from nio.properties.string import StringProperty
+from nio.properties.select import SelectProperty
+from nio.properties.list import ListProperty
+from nio.properties.holder import PropertyHolder
+from nio.util.threading.spawn import spawn
+from nio.block.mixins.collector.collector import Collector
 
 from udp_general import process_data
 
@@ -39,7 +39,7 @@ class GenUDPHandler(BaseRequestHandler):
     def _parse_packet(self, packet):
         return process_data(packet)
 
-@Discoverable(DiscoverableType.block)
+@discoverable
 class UDPReceive(Collector, Block):
     """ A Block for reading from a "general" UDP object (data in format `name:type:data`
     - type is according to python struct guidelines
@@ -56,11 +56,11 @@ class UDPReceive(Collector, Block):
         super().configure(context)
         try:
             self._server = ThreadedUDPServer(
-                (self.host, self.port),
+                (self.host(), self.port()),
                 GenUDPHandler,
                 self._handle_input)
         except Exception as e:
-            self._logger.error(
+            self.logger.error(
                 "Failed to create server - {0} : {1}".format(
                     type(e).__name__, e))
 
@@ -69,7 +69,7 @@ class UDPReceive(Collector, Block):
         if self._server:
             spawn(self._server.serve_forever)
         else:
-            self._logger.warning("Server did not exist, so it was not started")
+            self.logger.warning("Server did not exist, so it was not started")
 
     def stop(self):
         if self._server:

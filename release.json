@@ -1,0 +1,7 @@
+{
+  "nio/GeneralUDP": {
+    "Language": "Python",
+    "Version": "1.0.0",
+    "Reference": "github.com/nio-blocks/udp_communication.git@v1.0.0"
+  }
+}

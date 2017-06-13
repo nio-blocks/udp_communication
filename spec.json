@@ -1,21 +1,22 @@
 {
-  "nio/GeneralUDP": {
-    "Input": "None",
-    "Commands": {},
-    "Output": "One signal per streamed UDP packet.\nThe name will be the name specified in the packet\nThe data will always be an **array of data** of the format specified in the packet",
-    "Description": "Recieve and convert general UDP data into signals.\nGeneral UDP data is in the form `name:type:data` where where type and data follow [python struct guidelines](https://docs.python.org/2/library/struct.html)",
-    "Category": "Communication",
-    "Properties": {
-      "port": {
-        "description": "Integer port number to bind the host UDP server to"
-      },
-      "host": {
-        "description": "IP Address to bind the host UDP server to"
-      }
-    },
-    "Dependencies": [
-      "None"
-    ],
-    "Version": "1.0.0"
-  }
+    "nio/GeneralUDP": {
+        "Output": {
+            "Description": "One signal per streamed UDP packet.\nThe name will be the name specified in the packet\nThe data will always be an **array of data** of the format specified in the packet"
+        },
+        "Properties": {
+            "host": {
+                "description": "IP Address to bind the host UDP server to"
+            },
+            "port": {
+                "description": "Integer port number to bind the host UDP server to"
+            }
+        },
+        "Commands": {},
+        "Category": "Communication",
+        "Description": "Recieve and convert general UDP data into signals.\nGeneral UDP data is in the form `name:type:data` where where type and data follow [python struct guidelines](https://docs.python.org/2/library/struct.html)",
+        "Version": "1.0.0",
+        "Input": {
+            "Description": "None"
+        }
+    }
 }

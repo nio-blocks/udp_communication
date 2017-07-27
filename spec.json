@@ -1,5 +1,5 @@
 {
-    "nio/GeneralUDP": {
+    "nio/UDPReceive": {
         "Output": {
             "Description": "One signal per streamed UDP packet.\nThe name will be the name specified in the packet\nThe data will always be an **array of data** of the format specified in the packet"
         },

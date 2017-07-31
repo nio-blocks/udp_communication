@@ -12,7 +12,7 @@ from nio.properties.holder import PropertyHolder
 from nio.util.threading.spawn import spawn
 from nio.block.mixins.collector.collector import Collector
 
-from udp_general import process_data
+from .udp_general import process_data
 
 class ThreadedUDPServer(ThreadingMixIn, UDPServer):
     def __init__(self, server_address, handler_class, notifier):

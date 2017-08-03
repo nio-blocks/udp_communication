@@ -1,7 +1,7 @@
-
 from six import string_types
 import socket
 import struct
+import sys
 
 UDP_DATA_FORMAT = "{name}:{format}:"
 ALL_POS = [255, 65535, 4294967295]
@@ -16,6 +16,7 @@ DTYPES = {
         (STD_NEG[2], STD_POS[2]):  'l',
         (0, ALL_POS[2]):           'L',
          }
+
 
 def find_dtype(tup, dtype):
     '''finds and returns the data type according to
@@ -47,7 +48,7 @@ def find_dtype(tup, dtype):
 
     return str(len(tup)) + DTYPES[(dmin, dmax)]
 
-import sys
+
 def convert_data(name, iterable, dtype):
     data = tuple(iterable)
     dtype = find_dtype(data, dtype)
@@ -56,6 +57,7 @@ def convert_data(name, iterable, dtype):
     if sys.version_info[0] >= 3:
         header = header.encode()
     return header + packed_data
+
 
 class UDP(object):
     def __init__(self, ip, port):

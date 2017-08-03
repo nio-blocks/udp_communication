@@ -4,8 +4,8 @@ import struct
 import re
 import sys
 
-#########################
-## UDP Reciever
+
+# UDP Reciever
 def process_data(in_message):
     print("st:", repr(in_message))
     if not isinstance(in_message, str):
@@ -20,6 +20,7 @@ def process_data(in_message):
     data = in_message[len(name) + len(dtype) + 2:]
     data = struct.unpack(dtype, data)
     return {name: data}
+
 
 class UDP_receiver(object):
     def __init__(self, ip, port):
@@ -39,9 +40,8 @@ class UDP_receiver(object):
         print('got', repr(message))
         return process_data(message)
 
-#########################
-## UDP Sender
-#
+
+# UDP Sender
 UDP_DATA_FORMAT = "{name}:{format}:"
 ALL_POS = [255, 65535, 4294967295]
 STD_POS = [127, 32767, 2147483647]
@@ -55,6 +55,7 @@ DTYPES = {
         (STD_NEG[2], STD_POS[2]):  'l',
         (0, ALL_POS[2]):           'L',
          }
+
 
 def find_dtype(tup, dtype):
     '''finds and returns the data type according to
@@ -86,6 +87,7 @@ def find_dtype(tup, dtype):
 
     return str(len(tup)) + DTYPES[(dmin, dmax)]
 
+
 def convert_data(name, iterable, dtype):
     data = tuple(iterable)
     dtype = find_dtype(data, dtype)
@@ -94,6 +96,7 @@ def convert_data(name, iterable, dtype):
     if sys.version_info[0] >= 3:
         header = header.encode()
     return header + packed_data
+
 
 class UDP_sender(object):
     def __init__(self, ip, port):
@@ -107,6 +110,7 @@ class UDP_sender(object):
         print(repr(message))
         return self.socket.sendall(message)
 
+
 def main_receiver():
     UDP_IP = "0.0.0.0"
     UDP_PORT = 5099
@@ -115,6 +119,7 @@ def main_receiver():
     while True:
         print(udp.receive_data(1024))
         time.sleep(0.001)
+
 
 def main_sender():
     import time

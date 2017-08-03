@@ -14,10 +14,12 @@ from nio.block.mixins.collector.collector import Collector
 
 from .udp_general import process_data
 
+
 class ThreadedUDPServer(ThreadingMixIn, UDPServer):
     def __init__(self, server_address, handler_class, notifier):
         super().__init__(server_address, handler_class)
         self.notifier = notifier
+
 
 class GenUDPHandler(BaseRequestHandler):
     """
@@ -27,10 +29,7 @@ class GenUDPHandler(BaseRequestHandler):
     when sending data back via sendto().
     """
     def handle(self):
-        #data = self.request[0].strip()
         data = self.request[0]
-        #socket = self.request[1]
-        #client_addr = self.client_address[0]
 
         pack = self._parse_packet(data)
         if pack:
@@ -39,11 +38,14 @@ class GenUDPHandler(BaseRequestHandler):
     def _parse_packet(self, packet):
         return process_data(packet)
 
+
 @discoverable
 class UDPReceive(Collector, Block):
-    """ A Block for reading from a "general" UDP object (data in format `name:type:data`
+    """ Reads from a "general" UDP object
+
+    data in format `name:type:data`
     - type is according to python struct guidelines
-    - FUTURE:name can have commas. i.e. name,subname will be a dictionary of dict[name][subname]"""
+    """
 
     host = StringProperty(title="Listener Host", default="127.0.0.1")
     port = IntProperty(title="Listener Port", default=5008)

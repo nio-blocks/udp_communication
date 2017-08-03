@@ -1,3 +1,10 @@
+DEPRECATED
+==========
+
+Use [UDPServer](https://github.com/nio-blocks/udp_server) instead.
+
+****
+
 GeneralUDP
 =======
 
@@ -37,4 +44,3 @@ One signal per streamed UDP packet.
 The name will be the name specified in the packet
 
 The data will always be an **array of data** of the format specified in the packet 
-

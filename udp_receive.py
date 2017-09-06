@@ -1,14 +1,8 @@
-import binascii
-from enum import Enum
 from socketserver import ThreadingMixIn, UDPServer, BaseRequestHandler
-from nio.block.base import Block
-from nio.util.discovery import discoverable
+
+from nio import GeneratorBlock
 from nio.signal.base import Signal
-from nio.properties.int import IntProperty
-from nio.properties.string import StringProperty
-from nio.properties.select import SelectProperty
-from nio.properties.list import ListProperty
-from nio.properties.holder import PropertyHolder
+from nio.properties import IntProperty, StringProperty, VersionProperty
 from nio.util.threading.spawn import spawn
 from nio.block.mixins.collector.collector import Collector
 
@@ -39,8 +33,7 @@ class GenUDPHandler(BaseRequestHandler):
         return process_data(packet)
 
 
-@discoverable
-class UDPReceive(Collector, Block):
+class UDPReceive(Collector, GeneratorBlock):
     """ Reads from a "general" UDP object
 
     data in format `name:type:data`
@@ -49,6 +42,7 @@ class UDPReceive(Collector, Block):
 
     host = StringProperty(title="Listener Host", default="127.0.0.1")
     port = IntProperty(title="Listener Port", default=5008)
+    version = VersionProperty('0.1.0')
 
     def __init__(self):
         super().__init__()

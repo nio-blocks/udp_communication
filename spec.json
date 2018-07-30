@@ -1,13 +1,35 @@
 {
   "nio/UDPReceive": {
-    "version": "0.1.1",
-    "description": "",
-    "categories": [
-      "Communication"
-    ],
-    "properties": {},
+    "version": "0.1.0",
+    "description": "**DEPRECATED** Use [UDPServer](https://github.com/nio-blocks/udp_server) instead.  Recieve and convert general UDP data into signals.",
+    "properties": {
+      "collect": {
+        "title": "Collect Timeout",
+        "type": "TimeDeltaType",
+        "description": "The amount of time to collect UDP data between signals.",
+        "default": {
+          "seconds": 1
+        }
+      },
+      "host": {
+        "title": "Listener Host",
+        "type": "StringType",
+        "description": "IP Address to bind the host UDP server to.",
+        "default": "127.0.0.1"
+      },
+      "port": {
+        "title": "Listener Port",
+        "type": "IntType",
+        "description": "Integer port number to bind the host UDP server to.",
+        "default": 5008
+      }
+    },
     "inputs": {},
-    "outputs": {},
+    "outputs": {
+      "default": {
+        "description": "One signal per streamed UDP packet. The name will be the name specified in the packet The data will always be an **array of data** of the format specified in the packet."
+      }
+    },
     "commands": {}
   }
 }
